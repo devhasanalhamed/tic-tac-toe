@@ -111,6 +111,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                   constraints: const BoxConstraints(maxWidth: 400.0),
                   child: GridView.builder(
                     shrinkWrap: true,
+                    padding: EdgeInsets.zero,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
