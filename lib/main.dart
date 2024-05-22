@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tic_tac_too/two_players_screen.dart';
+import 'package:tic_tac_too/versus_computer_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,7 +59,12 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const VersusComputerScreen(),
+                  ),
+                ),
                 child: const Text("ضد الكمبيوتر 💻"),
               ),
             ],
