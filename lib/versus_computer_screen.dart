@@ -8,16 +8,16 @@ class VersusComputerScreen extends StatefulWidget {
 }
 
 class _VersusComputerScreenState extends State<VersusComputerScreen> {
-  final List<String> board = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
+  final List<int> board = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
   ];
 
   bool isPlayerOne = true;
@@ -127,11 +127,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
                         ),
                         child: FittedBox(
                           child: Text(
-                            board[index],
+                            board[index] == 0
+                                ? ''
+                                : board[index] == 1
+                                    ? 'x'
+                                    : 'o',
                             style: TextStyle(
                               shadows: [
                                 Shadow(
-                                  color: board[index] == 'x'
+                                  color: board[index] == 1
                                       ? Colors.red
                                       : Colors.blue,
                                   blurRadius: 24.0,
@@ -153,9 +157,9 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   }
 
   void tapped(int index) {
-    if (board[index].isEmpty) {
+    if (board[index] == 0) {
       setState(() {
-        board[index] = isPlayerOne ? 'x' : 'o';
+        board[index] = isPlayerOne ? 1 : -1;
       });
       counter += 1;
       checkWinner();
@@ -169,7 +173,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     print(board);
 
     for (int i = 0; i < board.length; i += 3) {
-      if (board[i].isNotEmpty &&
+      if (board[i] != 0 &&
           board[i] == board[i + 1] &&
           board[i] == board[i + 2]) {
         showResultDialog(true);
@@ -177,7 +181,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     }
 
     for (int i = 0; i < 3; i++) {
-      if (board[i].isNotEmpty &&
+      if (board[i] != 0 &&
           board[i] == board[i + 3] &&
           board[i] == board[i + 6]) {
         showResultDialog(true);
@@ -185,9 +189,9 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     }
 
     if (!thereIsAWinner) {
-      if (board[0].isNotEmpty && board[0] == board[4] && board[0] == board[8]) {
+      if (board[0] != 0 && board[0] == board[4] && board[0] == board[8]) {
         showResultDialog(true);
-      } else if (board[2].isNotEmpty &&
+      } else if (board[2] != 0 &&
           board[2] == board[4] &&
           board[2] == board[6]) {
         showResultDialog(true);
@@ -201,7 +205,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     counter = 0;
     thereIsAWinner = false;
     for (int i = 0; i < board.length; i++) {
-      board[i] = '';
+      board[i] = 0;
     }
   }
 
