@@ -167,6 +167,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     } else {
       print('Wrong move');
     }
+
+    for (int i = 0; i < board.length; i++) {
+      if (board[i] == 0) {
+        setState(() {
+          board[i] = 1;
+        });
+        break;
+      }
+    }
   }
 
   void checkWinner() {
