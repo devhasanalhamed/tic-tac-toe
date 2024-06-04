@@ -163,19 +163,172 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       });
       counter += 1;
       checkWinner();
-      if (!thereIsAWinner) isPlayerOne = !isPlayerOne;
     } else {
       print('Wrong move');
+    }
+
+    // Computer turn
+    if (board[0] + board[1] + board[2] == 2) {
+      if (board[0] == 0) {
+        board[0] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[1] == 0) {
+        board[1] = -1;
+        counter += 1;
+        return;
+      } else {
+        board[2] = -1;
+        counter += 1;
+        return;
+      }
+    }
+
+    if (board[3] + board[4] + board[5] == 2) {
+      if (board[3] == 0) {
+        board[3] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[4] == 0) {
+        board[4] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[5] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[6] + board[7] + board[8] == 2) {
+      if (board[6] == 0) {
+        board[6] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[7] == 0) {
+        board[7] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[8] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[0] + board[3] + board[6] == 2) {
+      if (board[0] == 0) {
+        board[0] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[3] == 0) {
+        board[3] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[6] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[1] + board[4] + board[7] == 2) {
+      if (board[1] == 0) {
+        board[1] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[4] == 0) {
+        board[4] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[7] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[2] + board[5] + board[8] == 2) {
+      if (board[2] == 0) {
+        board[2] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[5] == 0) {
+        board[5] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[8] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[0] + board[4] + board[8] == 2) {
+      if (board[0] == 0) {
+        board[0] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[4] == 0) {
+        board[4] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[8] = -1;
+        counter += 1;
+
+        return;
+      }
+    }
+
+    if (board[2] + board[4] + board[6] == 2) {
+      if (board[2] == 0) {
+        board[2] = -1;
+        counter += 1;
+
+        return;
+      } else if (board[4] == 0) {
+        board[4] = -1;
+        counter += 1;
+
+        return;
+      } else {
+        board[6] = -1;
+        counter += 1;
+
+        return;
+      }
     }
 
     for (int i = 0; i < board.length; i++) {
       if (board[i] == 0) {
         setState(() {
-          board[i] = 1;
+          board[i] = -1;
+          counter += 1;
         });
         break;
       }
     }
+
+    checkWinner();
   }
 
   void checkWinner() {
