@@ -20,6 +20,18 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     0,
   ];
 
+  final List<int> availableIndex = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+  ];
+
   bool isPlayerOne = true;
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
