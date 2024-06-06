@@ -332,7 +332,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       }
     }
 
-    while (true) {
+    while (true && !thereIsAWinner) {
       int random = Random().nextInt(8);
       if (board[random] == 0) {
         setState(() {
