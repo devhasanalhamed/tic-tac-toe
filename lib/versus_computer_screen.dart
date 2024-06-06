@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class VersusComputerScreen extends StatefulWidget {
@@ -330,10 +332,11 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       }
     }
 
-    for (int i = 0; i < board.length; i++) {
-      if (board[i] == 0) {
+    while (true) {
+      int random = Random().nextInt(8);
+      if (board[random] == 0) {
         setState(() {
-          board[i] = -1;
+          board[random] = -1;
           counter += 1;
         });
         break;
