@@ -25,6 +25,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   bool isPlayerOne = true;
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
+  String? winner;
   bool thereIsAWinner = false;
   int playerOneScore = 0;
   int playerTwoScore = 0;
@@ -161,57 +162,50 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   void tapped(int index) {
     if (board[index] == 0) {
       setState(() {
-        board[index] = isPlayerOne ? 1 : -1;
+        setValueAtIndex(index, 1);
       });
-      counter += 1;
-      checkWinner();
     } else {
       print('Wrong move');
     }
 
     computerTurn();
-    checkWinner();
   }
 
   Future<void> computerTurn() async {
     // Computer turn
 
     if (board[4] == 0) {
-      board[4] = -1;
-      counter += 1;
+      setValueAtIndex(4, -1);
+
       return;
     }
     if (board[0] + board[1] + board[2] == 2) {
       if (board[0] == 0) {
-        board[0] = -1;
-        counter += 1;
+        setValueAtIndex(0, -1);
 
         return;
       } else if (board[1] == 0) {
-        board[1] = -1;
-        counter += 1;
+        setValueAtIndex(1, -1);
+
         return;
       } else {
-        board[2] = -1;
-        counter += 1;
+        setValueAtIndex(2, -1);
+
         return;
       }
     }
 
     if (board[3] + board[4] + board[5] == 2) {
       if (board[3] == 0) {
-        board[3] = -1;
-        counter += 1;
+        setValueAtIndex(3, -1);
 
         return;
       } else if (board[4] == 0) {
-        board[4] = -1;
-        counter += 1;
+        setValueAtIndex(4, -1);
 
         return;
       } else {
-        board[5] = -1;
-        counter += 1;
+        setValueAtIndex(5, -1);
 
         return;
       }
@@ -219,18 +213,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[6] + board[7] + board[8] == 2) {
       if (board[6] == 0) {
-        board[6] = -1;
-        counter += 1;
+        setValueAtIndex(6, -1);
 
         return;
       } else if (board[7] == 0) {
-        board[7] = -1;
-        counter += 1;
+        setValueAtIndex(7, -1);
 
         return;
       } else {
-        board[8] = -1;
-        counter += 1;
+        setValueAtIndex(8, -1);
 
         return;
       }
@@ -238,18 +229,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[0] + board[3] + board[6] == 2) {
       if (board[0] == 0) {
-        board[0] = -1;
-        counter += 1;
+        setValueAtIndex(0, -1);
 
         return;
       } else if (board[3] == 0) {
-        board[3] = -1;
-        counter += 1;
+        setValueAtIndex(3, -1);
 
         return;
       } else {
-        board[6] = -1;
-        counter += 1;
+        setValueAtIndex(6, -1);
 
         return;
       }
@@ -257,18 +245,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[1] + board[4] + board[7] == 2) {
       if (board[1] == 0) {
-        board[1] = -1;
-        counter += 1;
+        setValueAtIndex(1, -1);
 
         return;
       } else if (board[4] == 0) {
-        board[4] = -1;
-        counter += 1;
+        setValueAtIndex(4, -1);
 
         return;
       } else {
-        board[7] = -1;
-        counter += 1;
+        setValueAtIndex(7, -1);
 
         return;
       }
@@ -276,18 +261,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[2] + board[5] + board[8] == 2) {
       if (board[2] == 0) {
-        board[2] = -1;
-        counter += 1;
+        setValueAtIndex(2, -1);
 
         return;
       } else if (board[5] == 0) {
-        board[5] = -1;
-        counter += 1;
+        setValueAtIndex(5, -1);
 
         return;
       } else {
-        board[8] = -1;
-        counter += 1;
+        setValueAtIndex(8, -1);
 
         return;
       }
@@ -295,18 +277,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[0] + board[4] + board[8] == 2) {
       if (board[0] == 0) {
-        board[0] = -1;
-        counter += 1;
+        setValueAtIndex(0, -1);
 
         return;
       } else if (board[4] == 0) {
-        board[4] = -1;
-        counter += 1;
+        setValueAtIndex(4, -1);
 
         return;
       } else {
-        board[8] = -1;
-        counter += 1;
+        setValueAtIndex(8, -1);
 
         return;
       }
@@ -314,18 +293,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (board[2] + board[4] + board[6] == 2) {
       if (board[2] == 0) {
-        board[2] = -1;
-        counter += 1;
+        setValueAtIndex(2, -1);
 
         return;
       } else if (board[4] == 0) {
-        board[4] = -1;
-        counter += 1;
+        setValueAtIndex(4, -1);
 
         return;
       } else {
-        board[6] = -1;
-        counter += 1;
+        setValueAtIndex(6, -1);
 
         return;
       }
@@ -335,12 +311,18 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       int random = Random().nextInt(8);
       if (board[random] == 0) {
         setState(() {
-          board[random] = -1;
-          counter += 1;
+          setValueAtIndex(random, -1);
         });
         break;
       }
     }
+  }
+
+  void setValueAtIndex(int index, int value) {
+    board[index] = value;
+    counter += 1;
+    checkWinner();
+    isPlayerOne = !isPlayerOne;
   }
 
   void checkWinner() {
@@ -350,6 +332,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       if (board[i] != 0 &&
           board[i] == board[i + 1] &&
           board[i] == board[i + 2]) {
+        winner = isPlayerOne ? playerOne : playerTwo;
         showResultDialog(true);
       }
     }
@@ -358,6 +341,8 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       if (board[i] != 0 &&
           board[i] == board[i + 3] &&
           board[i] == board[i + 6]) {
+        winner = isPlayerOne ? playerOne : playerTwo;
+
         showResultDialog(true);
       }
     }
@@ -368,6 +353,8 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       } else if (board[2] != 0 &&
           board[2] == board[4] &&
           board[2] == board[6]) {
+        winner = isPlayerOne ? playerOne : playerTwo;
+
         showResultDialog(true);
       } else if (counter == 9) {
         showResultDialog(false);
@@ -378,6 +365,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   void clearBoard() {
     counter = 0;
     thereIsAWinner = false;
+    winner = null;
     for (int i = 0; i < board.length; i++) {
       board[i] = 0;
     }
@@ -412,7 +400,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
                 constraints: const BoxConstraints(maxWidth: 200),
                 child: Text(
                   isWin
-                      ? "ألف مبروك يا ${isPlayerOne ? playerOne : playerTwo} تستاهل الفوز، حاب نتحدى مرة ثانية؟"
+                      ? "ألف مبروك يا $winner تستاهل الفوز، حاب نتحدى مرة ثانية؟"
                       : "هذه المرة الفوز من نصيبي أتحداك تفوز 🔥",
                 ),
               ),
