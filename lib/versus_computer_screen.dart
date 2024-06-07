@@ -170,6 +170,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     }
 
     computerTurn();
+    checkWinner();
   }
 
   Future<void> computerTurn() async {
@@ -340,8 +341,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
         break;
       }
     }
-
-    checkWinner();
   }
 
   void checkWinner() {
