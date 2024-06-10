@@ -24,6 +24,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
   bool thereIsAWinner = false;
+  String? winnerName;
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
@@ -144,6 +145,20 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                TextButton(
+                  onPressed: () => setState(() {
+                    clearBoard();
+                  }),
+                  child: const Text(
+                    "إعادة تعيين",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -203,11 +218,15 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
     for (int i = 0; i < board.length; i++) {
       board[i] = '';
     }
+    playerOneScore = 0;
+    playerTwoScore = 0;
   }
 
   Future<void> showResultDialog(bool isWin) async {
     thereIsAWinner = true;
     if (isWin) isPlayerOne ? playerOneScore += 1 : playerTwoScore += 1;
+    winnerName = isPlayerOne ? playerOne : playerTwo;
+    isPlayerOne = !isPlayerOne;
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -234,7 +253,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                 constraints: const BoxConstraints(maxWidth: 200),
                 child: Text(
                   isWin
-                      ? "ألف مبروك يا ${isPlayerOne ? playerOne : playerTwo} تستاهل الفوز، حاب نتحدى مرة ثانية؟"
+                      ? "ألف مبروك يا $winnerName تستاهل الفوز، حاب نتحدى مرة ثانية؟"
                       : "هذه المرة الفوز من نصيبي أتحداك تفوز 🔥",
                 ),
               ),
