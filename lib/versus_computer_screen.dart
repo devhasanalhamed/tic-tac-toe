@@ -22,6 +22,10 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     0,
   ];
 
+  final boardWin = [
+    [0, 1, 2],
+  ];
+
   bool isPlayerOne = true;
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
@@ -30,6 +34,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
+
+  @override
+  void didChangeDependencies() {
+    print("here");
+    if (mounted && !isPlayerOne && !thereIsAWinner) {
+      computerTurn();
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +180,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     } else {
       print('Wrong move');
     }
-
-    computerTurn();
   }
 
   Future<void> computerTurn() async {
@@ -349,6 +360,8 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     if (!thereIsAWinner) {
       if (board[0] != 0 && board[0] == board[4] && board[0] == board[8]) {
+        winner = isPlayerOne ? playerOne : playerTwo;
+
         showResultDialog(true);
       } else if (board[2] != 0 &&
           board[2] == board[4] &&
