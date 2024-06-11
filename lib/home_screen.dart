@@ -91,12 +91,32 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   label: const Text("لاعب ضد لاعب"),
-                  icon: const Icon(Icons.people),
+                  icon: const Icon(
+                    Icons.people,
+                  ),
+                  style: ButtonStyle(
+                    minimumSize: const WidgetStatePropertyAll(Size(0, 60)),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16.0),
                 ElevatedButton.icon(
                   label: const Text("لاعب ضد الكمبيوتر"),
-                  icon: const Icon(Icons.laptop),
+                  icon: const Icon(
+                    Icons.laptop,
+                  ),
+                  style: ButtonStyle(
+                    minimumSize: const WidgetStatePropertyAll(Size(0, 60)),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  ),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
