@@ -150,11 +150,11 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                 ),
                 TextButton(
                   onPressed: () => setState(() {
-                    clearBoard();
+                    thereIsAWinner ? clearBoard() : resetGame();
                   }),
-                  child: const Text(
-                    "إعادة تعيين",
-                    style: TextStyle(
+                  child: Text(
+                    thereIsAWinner ? "اللعب مجدداً" : "إعادة تعيين",
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
                     ),
                   ),
@@ -168,7 +168,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   }
 
   void tapped(int index) {
-    if (board[index].isEmpty) {
+    if (board[index].isEmpty && !thereIsAWinner) {
       setState(() {
         board[index] = isPlayerOne ? 'x' : 'o';
       });
@@ -218,6 +218,10 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
     for (int i = 0; i < board.length; i++) {
       board[i] = '';
     }
+  }
+
+  void resetGame() {
+    clearBoard();
     playerOneScore = 0;
     playerTwoScore = 0;
   }
@@ -237,15 +241,28 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
             textDirection: TextDirection.rtl,
             child: AlertDialog(
               actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      clearBoard();
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: const Text("اللعب مجدداً"),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          clearBoard();
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: const Text("اللعب مجدداً"),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: const Text("عرض النتيجة"),
+                    ),
+                  ],
+                ),
               ],
               title: Text(
                   isWin ? "مبرووووووووووووك 🥳" : "عوافي 🙂 نلعب مره ثانية"),
