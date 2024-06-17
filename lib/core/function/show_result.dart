@@ -21,11 +21,11 @@ Future<void> resultDialog({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () => continueFunction,
+                    onPressed: () => continueFunction(),
                     child: const Text("اللعب مجدداً"),
                   ),
                   TextButton(
-                    onPressed: () => skipFunction,
+                    onPressed: () => skipFunction(),
                     child: const Text("عرض النتيجة"),
                   ),
                 ],
