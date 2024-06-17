@@ -1,8 +1,12 @@
-Future<void> showResultDialog({required bool isDraw}, [String winnerName]) async {
-  thereIsAWinner = true;
-  if (isWin) isPlayerOne ? playerOneScore += 1 : playerTwoScore += 1;
-  winnerName = isPlayerOne ? playerOne : playerTwo;
-  isPlayerOne = !isPlayerOne;
+import 'package:flutter/material.dart';
+
+Future<void> resultDialog({
+  required BuildContext context,
+  required bool isWin,
+  String? winnerName,
+  required VoidCallback continueFunction,
+  required VoidCallback skipFunction,
+}) async {
   return showDialog(
     context: context,
     barrierDismissible: false,
@@ -17,27 +21,18 @@ Future<void> showResultDialog({required bool isDraw}, [String winnerName]) async
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        clearBoard();
-                        Navigator.pop(context);
-                      });
-                    },
+                    onPressed: () => continueFunction,
                     child: const Text("اللعب مجدداً"),
                   ),
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        Navigator.pop(context);
-                      });
-                    },
+                    onPressed: () => skipFunction,
                     child: const Text("عرض النتيجة"),
                   ),
                 ],
               ),
             ],
-            title: Text(
-                isWin ? "مبرووووووووووووك 🥳" : "عوافي 🙂 نلعب مره ثانية"),
+            title:
+                Text(isWin ? "مبرووووووووووووك 🥳" : "عوافي 🙂 نلعب مره ثانية"),
             content: Container(
               constraints: const BoxConstraints(maxWidth: 200),
               child: Text(
@@ -51,5 +46,4 @@ Future<void> showResultDialog({required bool isDraw}, [String winnerName]) async
       );
     },
   );
-}
 }
