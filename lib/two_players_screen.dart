@@ -188,7 +188,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 1] &&
           board[i] == board[i + 2]) {
-        showResultDialog(true);
+        showResultDialog();
       }
     }
 
@@ -196,21 +196,39 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 3] &&
           board[i] == board[i + 6]) {
-        showResultDialog(true);
+        showResultDialog();
       }
     }
 
     if (!thereIsAWinner) {
       if (board[0].isNotEmpty && board[0] == board[4] && board[0] == board[8]) {
-        showResultDialog(true);
+        showResultDialog();
       } else if (board[2].isNotEmpty &&
           board[2] == board[4] &&
           board[2] == board[6]) {
-        showResultDialog(true);
+        showResultDialog();
       } else if (counter == 9) {
-        showResultDialog(false);
+        showResultDialog();
       }
     }
+  }
+
+  void showResultDialog() {
+    resultDialog(
+      context: context,
+      isWin: true,
+      continueFunction: () {
+        setState(() {
+          clearBoard();
+          Navigator.pop(context);
+        });
+      },
+      skipFunction: () {
+        setState(() {
+          Navigator.pop(context);
+        });
+      },
+    );
   }
 
   void clearBoard() {
