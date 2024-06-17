@@ -34,6 +34,9 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
+  String? winnerName;
+
+
 
   @override
   void didChangeDependencies() {
