@@ -36,17 +36,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   int counter = 0;
   String? winnerName;
 
-
-
-  @override
-  void didChangeDependencies() {
-    print("here");
-    if (mounted && !isPlayerOne && !thereIsAWinner) {
-      computerTurn();
-    }
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -182,6 +171,9 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       });
     } else {
       print('Wrong move');
+    }
+    if (!isPlayerOne && !thereIsAWinner) {
+      computerTurn();
     }
   }
 
