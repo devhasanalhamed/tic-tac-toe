@@ -164,7 +164,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     );
   }
 
-  void tapped(int index) {
+  void tapped(int index) async {
     if (board[index] == 0) {
       setState(() {
         setValueAtIndex(index, 1);
@@ -173,11 +173,11 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       print('Wrong move');
     }
     if (!thereIsAWinner) {
-      Future.delayed(const Duration(seconds: 2), () {
-        showLoadingDialog();
-        computerTurn();
+      showLoadingDialog();
+      await Future.delayed(const Duration(seconds: 2), () {
         Navigator.pop(context);
       });
+      computerTurn();
     }
   }
 
@@ -427,14 +427,16 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     return showDialog(
       context: context,
       builder: (context) {
-        return Container(
-          width: 100,
-          height: 100,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-          child: const Center(
-            child: CircularProgressIndicator(),
+        return AlertDialog(
+          content: Container(
+            width: 100,
+            height: 100,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         );
       },
