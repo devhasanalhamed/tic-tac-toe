@@ -172,7 +172,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     } else {
       print('Wrong move');
     }
-    if (!isPlayerOne && !thereIsAWinner) {
+    if (!thereIsAWinner) {
       computerTurn();
     }
   }
