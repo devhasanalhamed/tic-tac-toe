@@ -30,11 +30,11 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
   String? winner;
+  String? winnerName;
   bool thereIsAWinner = false;
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
-  String? winnerName;
 
   @override
   Widget build(BuildContext context) {
