@@ -174,6 +174,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     }
     if (!thereIsAWinner) {
       Future.delayed(const Duration(seconds: 2), () {
+        showLoadingDialog();
         computerTurn();
         Navigator.pop(context);
       });
