@@ -173,7 +173,10 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       print('Wrong move');
     }
     if (!thereIsAWinner) {
-      computerTurn();
+      Future.delayed(const Duration(seconds: 2), () {
+        computerTurn();
+        Navigator.pop(context);
+      });
     }
   }
 
@@ -413,6 +416,24 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
                 ),
               ),
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> showLoadingDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Container(
+          width: 100,
+          height: 100,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         );
       },
