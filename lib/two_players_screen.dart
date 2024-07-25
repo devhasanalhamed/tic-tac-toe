@@ -168,6 +168,8 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 1] &&
           board[i] == board[i + 2]) {
+        thereIsAWinner = true;
+
         showResultDialog();
       }
     }
@@ -176,6 +178,8 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 3] &&
           board[i] == board[i + 6]) {
+        thereIsAWinner = true;
+
         showResultDialog();
       }
     }
@@ -186,6 +190,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       } else if (board[2].isNotEmpty &&
           board[2] == board[4] &&
           board[2] == board[6]) {
+        thereIsAWinner = true;
         showResultDialog();
       } else if (counter == 9) {
         showResultDialog();
@@ -196,9 +201,10 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   void showResultDialog() {
     resultDialog(
       context: context,
-      isWin: true,
+      isWin: thereIsAWinner,
       continueFunction: () {
         setState(() {
+          isPlayerOne = !isPlayerOne;
           clearBoard();
           Navigator.pop(context);
         });
