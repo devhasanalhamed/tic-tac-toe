@@ -26,9 +26,11 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
   bool thereIsAWinner = false;
+  String? winnerName;
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
+  bool showPlayAgainButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +92,13 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                   height: 32,
                 ),
                 Container(
-                  constraints: const BoxConstraints(maxWidth: 400.0),
+                  constraints: const BoxConstraints(
+                    maxWidth: 400.0,
+                    maxHeight: 400.0,
+                  ),
                   child: GridView.builder(
-                    shrinkWrap: true,
                     padding: EdgeInsets.zero,
+                    physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
@@ -134,7 +139,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                     thereIsAWinner ? clearBoard() : resetGame();
                   }),
                   child: Text(
-                    thereIsAWinner ? "اللعب مجدداً" : "إعادة تعيين",
+                    showPlayAgainButton ? "اللعب مجدداً" : "إعادة تعيين",
                     style: const TextStyle(
                       decoration: TextDecoration.underline,
                     ),
@@ -154,23 +159,34 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
         board[index] = isPlayerOne ? 'x' : 'o';
       });
       counter += 1;
-      checkWinner();
+      bool? result = checkWinner();
+      if (result == true) {
+        thereIsAWinner = true;
+        if (isPlayerOne) {
+          winnerName = playerOne;
+          playerOneScore += 1;
+        } else {
+          winnerName = playerTwo;
+          playerTwoScore += 1;
+        }
+        showResultDialog();
+      } else if (result == false) {
+        showResultDialog();
+      }
       if (!thereIsAWinner) isPlayerOne = !isPlayerOne;
     } else {
       print('Wrong move');
     }
   }
 
-  void checkWinner() {
+  bool? checkWinner() {
     print(board);
 
     for (int i = 0; i < board.length; i += 3) {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 1] &&
           board[i] == board[i + 2]) {
-        thereIsAWinner = true;
-
-        showResultDialog();
+        return true;
       }
     }
 
@@ -178,30 +194,30 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       if (board[i].isNotEmpty &&
           board[i] == board[i + 3] &&
           board[i] == board[i + 6]) {
-        thereIsAWinner = true;
-
-        showResultDialog();
+        return true;
       }
     }
 
     if (!thereIsAWinner) {
       if (board[0].isNotEmpty && board[0] == board[4] && board[0] == board[8]) {
-        showResultDialog();
+        return true;
       } else if (board[2].isNotEmpty &&
           board[2] == board[4] &&
           board[2] == board[6]) {
-        thereIsAWinner = true;
-        showResultDialog();
-      } else if (counter == 9) {
-        showResultDialog();
+        return true;
+      } else if (counter == 9 && !thereIsAWinner) {
+        return false;
       }
     }
+
+    return null;
   }
 
   void showResultDialog() {
     resultDialog(
       context: context,
       isWin: thereIsAWinner,
+      winnerName: winnerName,
       continueFunction: () {
         setState(() {
           isPlayerOne = !isPlayerOne;
@@ -211,6 +227,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       },
       skipFunction: () {
         setState(() {
+          showPlayAgainButton = true;
           Navigator.pop(context);
         });
       },
@@ -220,6 +237,8 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   void clearBoard() {
     counter = 0;
     thereIsAWinner = false;
+    showPlayAgainButton = false;
+    winnerName = null;
     for (int i = 0; i < board.length; i++) {
       board[i] = '';
     }
