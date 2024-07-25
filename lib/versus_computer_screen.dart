@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tic_tac_too/widget/your_turn_widget.dart';
 
 class VersusComputerScreen extends StatefulWidget {
   const VersusComputerScreen({super.key});
@@ -22,19 +23,15 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     0,
   ];
 
-  final boardWin = [
-    [0, 1, 2],
-  ];
-
   bool isPlayerOne = true;
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
-  String? winner;
-  String? winnerName;
   bool thereIsAWinner = false;
+  String? winnerName;
   int playerOneScore = 0;
   int playerTwoScore = 0;
-  int counter = 0;
+  int roundCount = 0;
+  bool showPlayAgainButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,32 +47,12 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "👀",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  "دورك يا",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.amber,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(height: 8.0),
-                Text(
-                  isPlayerOne ? playerOne : playerTwo,
-                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                      color: isPlayerOne ? Colors.red : Colors.blue,
-                      shadows: [
-                        Shadow(
-                          color: isPlayerOne ? Colors.red : Colors.blue,
-                          blurRadius: 16.0,
-                        ),
-                      ]),
-                ),
-                const SizedBox(
-                  height: 32,
+                SizedBox(
+                  height: 128.0,
+                  child: YourTurnWidget(
+                    playerName: isPlayerOne ? playerOne : playerTwo,
+                    isPlayerOne: isPlayerOne,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -174,9 +151,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     }
     if (!thereIsAWinner) {
       showLoadingDialog();
-      await Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pop(context);
-      });
+
       computerTurn();
     }
   }
