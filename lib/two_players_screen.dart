@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tic_tac_too/widget/your_turn_widget.dart';
 import 'core/function/show_result.dart';
 
 class TwoPlayersScreen extends StatefulWidget {
@@ -25,7 +26,6 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   String playerOne = 'إكس';
   String playerTwo = 'أوه';
   bool thereIsAWinner = false;
-  String? winnerName;
   int playerOneScore = 0;
   int playerTwoScore = 0;
   int counter = 0;
@@ -44,8 +44,12 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 32,
+                SizedBox(
+                  height: 128.0,
+                  child: YourTurnWidget(
+                    playerName: isPlayerOne ? playerOne : playerTwo,
+                    isPlayerOne: isPlayerOne,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
