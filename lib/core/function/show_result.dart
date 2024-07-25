@@ -26,7 +26,7 @@ Future<void> resultDialog({
                   ),
                   TextButton(
                     onPressed: () => skipFunction(),
-                    child: const Text("عرض النتيجة"),
+                    child: const Text("عرض الساحة"),
                   ),
                 ],
               ),
