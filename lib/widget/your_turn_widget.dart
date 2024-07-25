@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class YourTurnWidget extends StatelessWidget {
   final String playerName;
+  final bool isPlayerOne;
 
   const YourTurnWidget({
     required this.playerName,
+    required this.isPlayerOne,
     super.key,
   });
 
@@ -26,7 +28,7 @@ class YourTurnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 8.0),
         Text(
-          isPlayerOne ? playerOne : playerTwo,
+          playerName,
           style: Theme.of(context).textTheme.headlineLarge!.copyWith(
               color: isPlayerOne ? Colors.red : Colors.blue,
               shadows: [
