@@ -176,7 +176,13 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
       }
       if (!thereIsAWinner) isPlayerOne = !isPlayerOne;
     } else {
-      print('Wrong move');
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("حركة خاطئة!"),
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
   }
 
