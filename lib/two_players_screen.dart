@@ -11,16 +11,16 @@ class TwoPlayersScreen extends StatefulWidget {
 }
 
 class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
-  final List<String> board = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
+  final List<int> board = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
   ];
 
   bool isPlayerOne = true;
@@ -105,31 +105,43 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
                       crossAxisCount: 3,
                     ),
                     itemCount: board.length,
-                    itemBuilder: (context, index) => InkWell(
-                      onTap: () => tapped(index),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white70,
+                    itemBuilder: (context, index) {
+                      final String playerTag;
+                      final Color playerColor;
+                      if (board[index] == 1) {
+                        playerTag = "x";
+                        playerColor = Colors.red;
+                      } else if (board[index] == -1) {
+                        playerTag = "o";
+                        playerColor = Colors.blue;
+                      } else {
+                        playerTag = "";
+                        playerColor = Colors.black;
+                      }
+                      return InkWell(
+                        onTap: () => tapped(index),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white70,
+                            ),
                           ),
-                        ),
-                        child: FittedBox(
-                          child: Text(
-                            board[index],
-                            style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                  color: board[index] == 'x'
-                                      ? Colors.red
-                                      : Colors.blue,
-                                  blurRadius: 24.0,
-                                ),
-                              ],
+                          child: FittedBox(
+                            child: Text(
+                              playerTag,
+                              style: TextStyle(
+                                shadows: [
+                                  Shadow(
+                                    color: playerColor,
+                                    blurRadius: 24.0,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
@@ -155,9 +167,9 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   }
 
   void tapped(int index) {
-    if (board[index].isEmpty && !thereIsAWinner) {
+    if (board[index] == 0 && !thereIsAWinner) {
       setState(() {
-        board[index] = isPlayerOne ? 'x' : 'o';
+        board[index] = isPlayerOne ? 1 : -1;
       });
       roundCount += 1;
       bool? result = ticTacToeLogic(board, roundCount);
@@ -213,7 +225,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
     showPlayAgainButton = false;
     winnerName = null;
     for (int i = 0; i < board.length; i++) {
-      board[i] = '';
+      board[i] = 0;
     }
   }
 
