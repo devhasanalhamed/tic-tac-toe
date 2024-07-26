@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tic_tac_too/core/function/tic_tac_toe_logic.dart';
+
 import 'package:tic_tac_too/widget/your_turn_widget.dart';
+import 'core/function/show_result.dart';
 
 class VersusComputerScreen extends StatefulWidget {
   const VersusComputerScreen({super.key});
@@ -102,34 +105,56 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
                       crossAxisCount: 3,
                     ),
                     itemCount: board.length,
-                    itemBuilder: (context, index) => InkWell(
-                      onTap: () => tapped(index),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white70,
+                    itemBuilder: (context, index) {
+                      final String playerTag;
+                      final Color playerColor;
+                      if (board[index] == 1) {
+                        playerTag = "x";
+                        playerColor = Colors.red;
+                      } else if (board[index] == -1) {
+                        playerTag = "o";
+                        playerColor = Colors.blue;
+                      } else {
+                        playerTag = "";
+                        playerColor = Colors.black;
+                      }
+                      return InkWell(
+                        onTap: () => tapped(index),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white70,
+                            ),
                           ),
-                        ),
-                        child: FittedBox(
-                          child: Text(
-                            board[index] == 0
-                                ? ''
-                                : board[index] == 1
-                                    ? 'x'
-                                    : 'o',
-                            style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                  color: board[index] == 1
-                                      ? Colors.red
-                                      : Colors.blue,
-                                  blurRadius: 24.0,
-                                ),
-                              ],
+                          child: FittedBox(
+                            child: Text(
+                              playerTag,
+                              style: TextStyle(
+                                shadows: [
+                                  Shadow(
+                                    color: playerColor,
+                                    blurRadius: 24.0,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                TextButton(
+                  onPressed: () => setState(() {
+                    thereIsAWinner ? clearBoard() : resetGame();
+                  }),
+                  child: Text(
+                    showPlayAgainButton ? "اللعب مجدداً" : "إعادة تعيين",
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
@@ -142,7 +167,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   }
 
   void tapped(int index) async {
-    if (board[index] == 0) {
+    if (board[index] == 0 && !thereIsAWinner) {
       setState(() {
         setValueAtIndex(index, 1);
       });
@@ -150,8 +175,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       print('Wrong move');
     }
     if (!thereIsAWinner) {
-      showLoadingDialog();
-
       computerTurn();
     }
   }
@@ -292,7 +315,8 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       }
     }
 
-    while (true && !thereIsAWinner) {
+    while (!thereIsAWinner) {
+      print("problem");
       int random = Random().nextInt(8);
       if (board[random] == 0) {
         setState(() {
@@ -305,116 +329,60 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
   void setValueAtIndex(int index, int value) {
     board[index] = value;
-    counter += 1;
-    checkWinner();
+    roundCount += 1;
+    bool? result = ticTacToeLogic(board, roundCount);
+    if (result == true) {
+      thereIsAWinner = true;
+      if (isPlayerOne) {
+        winnerName = playerOne;
+        playerOneScore += 1;
+      } else {
+        winnerName = playerTwo;
+        playerTwoScore += 1;
+      }
+      showResultDialog();
+    } else if (result == false) {
+      showResultDialog();
+    }
+    if (!thereIsAWinner) isPlayerOne = !isPlayerOne;
+
     isPlayerOne = !isPlayerOne;
   }
 
-  void checkWinner() {
-    print(board);
-
-    for (int i = 0; i < board.length; i += 3) {
-      if (board[i] != 0 &&
-          board[i] == board[i + 1] &&
-          board[i] == board[i + 2]) {
-        winner = isPlayerOne ? playerOne : playerTwo;
-        showResultDialog(true);
-      }
-    }
-
-    for (int i = 0; i < 3; i++) {
-      if (board[i] != 0 &&
-          board[i] == board[i + 3] &&
-          board[i] == board[i + 6]) {
-        winner = isPlayerOne ? playerOne : playerTwo;
-
-        showResultDialog(true);
-      }
-    }
-
-    if (!thereIsAWinner) {
-      if (board[0] != 0 && board[0] == board[4] && board[0] == board[8]) {
-        winner = isPlayerOne ? playerOne : playerTwo;
-
-        showResultDialog(true);
-      } else if (board[2] != 0 &&
-          board[2] == board[4] &&
-          board[2] == board[6]) {
-        winner = isPlayerOne ? playerOne : playerTwo;
-
-        showResultDialog(true);
-      } else if (counter == 9) {
-        showResultDialog(false);
-      }
-    }
+  void showResultDialog() {
+    resultDialog(
+      context: context,
+      isWin: thereIsAWinner,
+      winnerName: winnerName,
+      continueFunction: () {
+        setState(() {
+          isPlayerOne = !isPlayerOne;
+          clearBoard();
+          Navigator.pop(context);
+        });
+      },
+      skipFunction: () {
+        setState(() {
+          showPlayAgainButton = true;
+          Navigator.pop(context);
+        });
+      },
+    );
   }
 
   void clearBoard() {
-    counter = 0;
+    roundCount = 0;
     thereIsAWinner = false;
-    winner = null;
+    showPlayAgainButton = false;
+    winnerName = null;
     for (int i = 0; i < board.length; i++) {
       board[i] = 0;
     }
   }
 
-  Future<void> showResultDialog(bool isWin) async {
-    thereIsAWinner = true;
-    if (isWin) isPlayerOne ? playerOneScore += 1 : playerTwoScore += 1;
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return PopScope(
-          canPop: false,
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: AlertDialog(
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      clearBoard();
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: const Text("اللعب مجدداً"),
-                )
-              ],
-              title: Text(
-                  isWin ? "مبرووووووووووووك 🥳" : "عوافي 🙂 نلعب مره ثانية"),
-              content: Container(
-                constraints: const BoxConstraints(maxWidth: 200),
-                child: Text(
-                  isWin
-                      ? "ألف مبروك يا $winner تستاهل الفوز، حاب نتحدى مرة ثانية؟"
-                      : "هذه المرة الفوز من نصيبي أتحداك تفوز 🔥",
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> showLoadingDialog() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Container(
-            width: 100,
-            height: 100,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
-    );
+  void resetGame() {
+    clearBoard();
+    playerOneScore = 0;
+    playerTwoScore = 0;
   }
 }
