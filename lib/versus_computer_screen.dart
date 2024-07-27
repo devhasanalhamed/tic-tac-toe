@@ -13,6 +13,11 @@ class VersusComputerScreen extends StatefulWidget {
   State<VersusComputerScreen> createState() => _VersusComputerScreenState();
 }
 
+enum ComputerState {
+  standBy,
+  progress,
+}
+
 class _VersusComputerScreenState extends State<VersusComputerScreen> {
   final List<int> board = [
     0,
@@ -35,6 +40,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   int playerTwoScore = 0;
   int roundCount = 0;
   bool showPlayAgainButton = false;
+  ComputerState computerState = ComputerState.standBy;
 
   @override
   Widget build(BuildContext context) {
@@ -42,124 +48,141 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 24.0,
-              horizontal: 16.0,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 128.0,
-                  child: YourTurnWidget(
-                    playerName: isPlayerOne ? playerOne : playerTwo,
-                    isPlayerOne: isPlayerOne,
-                  ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24.0,
+                  horizontal: 16.0,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
+                    SizedBox(
+                      height: 128.0,
+                      child: YourTurnWidget(
+                        playerName: isPlayerOne ? playerOne : playerTwo,
+                        isPlayerOne: isPlayerOne,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          playerOne,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Text(
-                          '$playerOneScore',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                        Column(
+                          children: [
+                            Text(
+                              playerOne,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              '$playerOneScore',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
                                     color: Colors.red,
                                   ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              playerTwo,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              '$playerTwoScore',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(
+                                    color: Colors.blue,
+                                  ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          playerTwo,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 400.0),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
                         ),
-                        Text(
-                          '$playerTwoScore',
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Colors.blue,
+                        itemCount: board.length,
+                        itemBuilder: (context, index) {
+                          final String playerTag;
+                          final Color playerColor;
+                          if (board[index] == 1) {
+                            playerTag = "x";
+                            playerColor = Colors.red;
+                          } else if (board[index] == -1) {
+                            playerTag = "o";
+                            playerColor = Colors.blue;
+                          } else {
+                            playerTag = "";
+                            playerColor = Colors.black;
+                          }
+                          return InkWell(
+                            onTap: () => tapped(index),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              child: FittedBox(
+                                child: Text(
+                                  playerTag,
+                                  style: TextStyle(
+                                    shadows: [
+                                      Shadow(
+                                        color: playerColor,
+                                        blurRadius: 24.0,
+                                      ),
+                                    ],
                                   ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    TextButton(
+                      onPressed: () => setState(() {
+                        thereIsAWinner ? clearBoard() : resetGame();
+                      }),
+                      child: Text(
+                        showPlayAgainButton ? "اللعب مجدداً" : "إعادة تعيين",
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 32,
-                ),
+              ),
+              if (computerState == ComputerState.progress)
                 Container(
-                  constraints: const BoxConstraints(maxWidth: 400.0),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                    ),
-                    itemCount: board.length,
-                    itemBuilder: (context, index) {
-                      final String playerTag;
-                      final Color playerColor;
-                      if (board[index] == 1) {
-                        playerTag = "x";
-                        playerColor = Colors.red;
-                      } else if (board[index] == -1) {
-                        playerTag = "o";
-                        playerColor = Colors.blue;
-                      } else {
-                        playerTag = "";
-                        playerColor = Colors.black;
-                      }
-                      return InkWell(
-                        onTap: () => tapped(index),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white70,
-                            ),
-                          ),
-                          child: FittedBox(
-                            child: Text(
-                              playerTag,
-                              style: TextStyle(
-                                shadows: [
-                                  Shadow(
-                                    color: playerColor,
-                                    blurRadius: 24.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  color: Colors.white10,
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                TextButton(
-                  onPressed: () => setState(() {
-                    thereIsAWinner ? clearBoard() : resetGame();
-                  }),
-                  child: Text(
-                    showPlayAgainButton ? "اللعب مجدداً" : "إعادة تعيين",
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -175,12 +198,22 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       print('Wrong move');
     }
     if (!thereIsAWinner) {
-      computerTurn();
+      await computerTurn();
+      setState(() {
+        computerState = ComputerState.standBy;
+      });
     }
   }
 
   Future<void> computerTurn() async {
     // Computer turn
+    setState(() {
+      computerState = ComputerState.progress;
+    });
+
+    await Future.delayed(
+      const Duration(seconds: 4),
+    );
 
     if (board[4] == 0) {
       setValueAtIndex(4, -1);
@@ -344,9 +377,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     } else if (result == false) {
       showResultDialog();
     }
-    if (!thereIsAWinner) isPlayerOne = !isPlayerOne;
-
-    isPlayerOne = !isPlayerOne;
   }
 
   void showResultDialog() {
