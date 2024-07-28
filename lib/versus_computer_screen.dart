@@ -194,14 +194,14 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       setState(() {
         setValueAtIndex(index, 1);
       });
+      if (!thereIsAWinner) {
+        await computerTurn();
+        setState(() {
+          computerState = ComputerState.standBy;
+        });
+      }
     } else {
       print('Wrong move');
-    }
-    if (!thereIsAWinner) {
-      await computerTurn();
-      setState(() {
-        computerState = ComputerState.standBy;
-      });
     }
   }
 
