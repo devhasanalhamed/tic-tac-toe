@@ -1,6 +1,6 @@
 import 'dart:math';
 
-int computerLogic(List<int> board, int roundCount) {
+int? computerLogic(List<int> board, int roundCount) {
   if (board[4] == 0) {
     return 4;
   }
@@ -85,11 +85,12 @@ int computerLogic(List<int> board, int roundCount) {
   }
 
   while (roundCount < 9) {
+    print("here");
     int random = Random().nextInt(8);
     if (board[random] == 0) {
       return random;
     }
   }
 
-  return 9;
+  return null;
 }
