@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_too/core/function/tic_tac_toe_logic.dart';
 
 import 'package:tic_tac_too/widget/your_turn_widget.dart';
+import 'core/function/computer_logic.dart';
 import 'core/function/show_result.dart';
 
 class VersusComputerScreen extends StatefulWidget {
@@ -221,149 +222,9 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       const Duration(milliseconds: 1200),
     );
 
-    if (board[4] == 0) {
-      setValueAtIndex(4, -1);
+    final index = computerLogic(board, roundCount);
 
-      return;
-    }
-    if (board[0] + board[1] + board[2] == 2) {
-      if (board[0] == 0) {
-        setValueAtIndex(0, -1);
-
-        return;
-      } else if (board[1] == 0) {
-        setValueAtIndex(1, -1);
-
-        return;
-      } else {
-        setValueAtIndex(2, -1);
-
-        return;
-      }
-    }
-
-    if (board[3] + board[4] + board[5] == 2) {
-      if (board[3] == 0) {
-        setValueAtIndex(3, -1);
-
-        return;
-      } else if (board[4] == 0) {
-        setValueAtIndex(4, -1);
-
-        return;
-      } else {
-        setValueAtIndex(5, -1);
-
-        return;
-      }
-    }
-
-    if (board[6] + board[7] + board[8] == 2) {
-      if (board[6] == 0) {
-        setValueAtIndex(6, -1);
-
-        return;
-      } else if (board[7] == 0) {
-        setValueAtIndex(7, -1);
-
-        return;
-      } else {
-        setValueAtIndex(8, -1);
-
-        return;
-      }
-    }
-
-    if (board[0] + board[3] + board[6] == 2) {
-      if (board[0] == 0) {
-        setValueAtIndex(0, -1);
-
-        return;
-      } else if (board[3] == 0) {
-        setValueAtIndex(3, -1);
-
-        return;
-      } else {
-        setValueAtIndex(6, -1);
-
-        return;
-      }
-    }
-
-    if (board[1] + board[4] + board[7] == 2) {
-      if (board[1] == 0) {
-        setValueAtIndex(1, -1);
-
-        return;
-      } else if (board[4] == 0) {
-        setValueAtIndex(4, -1);
-
-        return;
-      } else {
-        setValueAtIndex(7, -1);
-
-        return;
-      }
-    }
-
-    if (board[2] + board[5] + board[8] == 2) {
-      if (board[2] == 0) {
-        setValueAtIndex(2, -1);
-
-        return;
-      } else if (board[5] == 0) {
-        setValueAtIndex(5, -1);
-
-        return;
-      } else {
-        setValueAtIndex(8, -1);
-
-        return;
-      }
-    }
-
-    if (board[0] + board[4] + board[8] == 2) {
-      if (board[0] == 0) {
-        setValueAtIndex(0, -1);
-
-        return;
-      } else if (board[4] == 0) {
-        setValueAtIndex(4, -1);
-
-        return;
-      } else {
-        setValueAtIndex(8, -1);
-
-        return;
-      }
-    }
-
-    if (board[2] + board[4] + board[6] == 2) {
-      if (board[2] == 0) {
-        setValueAtIndex(2, -1);
-
-        return;
-      } else if (board[4] == 0) {
-        setValueAtIndex(4, -1);
-
-        return;
-      } else {
-        setValueAtIndex(6, -1);
-
-        return;
-      }
-    }
-
-    while (!thereIsAWinner && roundCount < 9) {
-      print("problem");
-      int random = Random().nextInt(8);
-      if (board[random] == 0) {
-        setState(() {
-          setValueAtIndex(random, -1);
-        });
-        break;
-      }
-    }
+    setValueAtIndex(index, -1);
   }
 
   void setValueAtIndex(int index, int value) {
