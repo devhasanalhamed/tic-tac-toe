@@ -201,7 +201,13 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
         });
       }
     } else {
-      print('Wrong move');
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("حركة خاطئة!"),
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
   }
 
@@ -212,7 +218,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     });
 
     await Future.delayed(
-      const Duration(seconds: 4),
+      const Duration(milliseconds: 1200),
     );
 
     if (board[4] == 0) {
@@ -377,6 +383,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     } else if (result == false) {
       showResultDialog();
     }
+    isPlayerOne = !isPlayerOne;
   }
 
   void showResultDialog() {
@@ -386,7 +393,6 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
       winnerName: winnerName,
       continueFunction: () {
         setState(() {
-          isPlayerOne = !isPlayerOne;
           clearBoard();
           Navigator.pop(context);
         });
@@ -405,6 +411,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
     thereIsAWinner = false;
     showPlayAgainButton = false;
     winnerName = null;
+    isPlayerOne = true;
     for (int i = 0; i < board.length; i++) {
       board[i] = 0;
     }
