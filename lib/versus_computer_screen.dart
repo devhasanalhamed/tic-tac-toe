@@ -224,6 +224,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
 
     final index = computerLogic(board, roundCount);
 
+    if (index == null) return;
     setValueAtIndex(index, -1);
   }
 
