@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tic_tac_too/core/function/tic_tac_toe_logic.dart';
 
