@@ -85,7 +85,6 @@ int? computerLogic(List<int> board, int roundCount) {
   }
 
   while (roundCount < 9) {
-    print("here");
     int random = Random().nextInt(8);
     if (board[random] == 0) {
       return random;
