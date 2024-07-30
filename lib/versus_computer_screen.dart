@@ -4,6 +4,7 @@ import 'package:tic_tac_too/core/function/tic_tac_toe_logic.dart';
 import 'package:tic_tac_too/widget/your_turn_widget.dart';
 import 'core/function/computer_logic.dart';
 import 'core/function/show_result.dart';
+import 'package:flutter/services.dart';
 
 class VersusComputerScreen extends StatefulWidget {
   const VersusComputerScreen({super.key});
@@ -227,6 +228,7 @@ class _VersusComputerScreenState extends State<VersusComputerScreen> {
   }
 
   void setValueAtIndex(int index, int value) {
+    HapticFeedback.heavyImpact();
     board[index] = value;
     roundCount += 1;
     bool? result = ticTacToeLogic(board, roundCount);
