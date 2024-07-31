@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tic_tac_too/core/function/tic_tac_toe_logic.dart';
 import 'package:tic_tac_too/widget/your_turn_widget.dart';
+import 'package:vibration/vibration.dart';
 import 'core/function/show_result.dart';
 
 class TwoPlayersScreen extends StatefulWidget {
@@ -167,6 +168,8 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   }
 
   void tapped(int index) {
+    Vibration.vibrate(duration: 2000);
+
     if (board[index] == 0 && !thereIsAWinner) {
       setState(() {
         board[index] = isPlayerOne ? 1 : -1;
@@ -199,6 +202,7 @@ class _TwoPlayersScreenState extends State<TwoPlayersScreen> {
   }
 
   void showResultDialog() {
+    Vibration.vibrate(duration: 2000);
     resultDialog(
       context: context,
       isWin: thereIsAWinner,
